@@ -350,13 +350,6 @@ object usingAirbaseXML_2 extends App {
 
 }
 
-  //println(measurements.mkString("\n"))
-  //measurements.split(",").foreach(println)
-//measurements.foreach(println)
-
-  //for (i <- (measurements) )
-//
-  //for ((x, y) <- station.zip(mappingStationWithYears))
 
 
 
