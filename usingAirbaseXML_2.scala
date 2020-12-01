@@ -315,7 +315,6 @@ object usingAirbaseXML_2 extends App {
   println("*******************************************************")
   println("*******************************************************")
 
-
   println("Stations with statistic results of benzene air measurements.")
   (stationWithBenzene2, Years, airBenzeneStatistic_result).zipped foreach { (v1, v2, v3) =>
     println(s"Station Id and station name: $v1\nStatistic Years: $v2\nStatistic result with Benzene: $v3")
