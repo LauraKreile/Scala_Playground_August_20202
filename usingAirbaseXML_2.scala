@@ -3,7 +3,7 @@ import java.io.{File, PrintWriter}
 import scala.Console.println
 import scala.language.postfixOps
 import scala.xml.NodeSeq
-import scala.xml.XML.loadFile
+import scala.xml.XML.{loadFile, save}
 
 object usingAirbaseXML_2 extends App {
   val p = <p>Air base test</p>
@@ -16,8 +16,8 @@ object usingAirbaseXML_2 extends App {
   //  pw.write(write(myThings,indent = 2))
 
   //val pw = new PrintWriter(new File("./src/resources/airBaseLv_Result.txt"))
-  val pw = new PrintWriter(new File("./src/resources/airBaseLv_Result.tsv"))
-  //val pw = new PrintWriter(new File("c:/airBase/airBaseLv_Result.tsv"))
+  //val pw = new PrintWriter(new File("./src/resources/airBaseLv_Result.tsv"))
+  val pw = new PrintWriter(new File("c:/airBase/airBaseLv_Result.txt"))
   //val pw = new PrintWriter(new File("./src/resources/airBaseLv_Result.xml"))  //in there were reported errors (Unexpected tokens,Top level element is not completed,Valid XML document must have a root tag)
   //pw.write("<?xml version='1.0' encoding='ISO-8859-1'?>")
   //println("\n\nMy results about the country Latvian air base")
@@ -260,6 +260,8 @@ object usingAirbaseXML_2 extends App {
   println("*******************************************************")
   val yearsWithBenzeneAir = airBenzeneMeasurement_configuration \\ "statistics"
   //yearsWithBenzeneAir.foreach(println) //this is good, final
+  save("c:/airBase/airBaseLv_Result3.xml", <kook>{yearsWithBenzeneAir}</kook>,xmlDecl = true)
+
   // println(finallyStationBenzene.map(_.text))
   def statisticInfo(el: NodeSeq): Unit = {
     val year = (el \ "@Year").text
@@ -315,12 +317,49 @@ object usingAirbaseXML_2 extends App {
   println("*******************************************************")
   println("*******************************************************")
 
+
+
   println("Stations with statistic results of benzene air measurements.")
   (stationWithBenzene2, Years, airBenzeneStatistic_result).zipped foreach { (v1, v2, v3) =>
     println(s"Station Id and station name: $v1\nStatistic Years: $v2\nStatistic result with Benzene: $v3")
     pw.close
   }
+  val allStationLV2 = airBase \ "country" \ "network" \ "station"
+  //println(allStationLV2)
+   val ooo = for (i <- allStationLV2) yield i \\ "station_info"
+//println(ooo)
 
+  def stationInfo(el: NodeSeq): Unit = {
+    val code = (el \ "station_european_code").text
+    val localCode = (el \ "station_local_code").text
+    val name = (el \ "station_name").text
+    val descp = (el \ "station_description").text
+//    val startDate = (el \ "measurement_start_date").text
+//    val latestDate = (el \ "measurement_latest_date_available_in_AIRBASE").text
+//    val europeanCode = (el \ "measurement_european_code").text
+//    val technique = (el \ "measurement_technique_principle").text
+//    val equipment = (el \ "measurement_equipment").text
+//    val calibration = (el \ "calibration_unit").text
+//    val point = (el \ "height_sampling_point").text.toInt
+//    val line = (el \ "length_sampling_line").text.toInt
+//    val samplingPoint = (el \ "location_sampling_point").text
+//    val time = (el \ "sampling_time").text.toInt
+//    val frequency = (el \ "calibration_frequency").text.toInt
+//    val method = (el \ "calibration_method").text
+
+    def toString = {
+      s"  Component_name: $code\n     Component caption: $localCode\n     Component code: $name\n" +
+        s"     Measurement unit: $descp\n "
+    }
+
+    println(toString)
+    //pw.write(s"\n   $toString")
+  }
+  val pw2 = new PrintWriter(new File("c:/airBase/airBaseLv9999t.xml"))
+pw2.write(statisticInfo(ooo(1)).toString)
+println(statisticInfo(ooo(1)))
+  //pw2.close()
+  //val json = formattedooo.toJSON
 //val yearsWithBenzeneAir2 = for (i <- airBenzeneMeasurement_configuration) yield i \\ "statistics"
 //println(yearsWithBenzeneAir2)
   //airBenzeneMeasurement_info1 = for (i <- airBenzeneMeasurement_configuration) yield i \\ "measurement_info"
@@ -348,6 +387,13 @@ object usingAirbaseXML_2 extends App {
 
 }
 
+  //println(measurements.mkString("\n"))
+  //measurements.split(",").foreach(println)
+//measurements.foreach(println)
+
+  //for (i <- (measurements) )
+//
+  //for ((x, y) <- station.zip(mappingStationWithYears))
 
 
 
